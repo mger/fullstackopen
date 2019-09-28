@@ -1,0 +1,11 @@
+title Ex 0.6: Single Page App New Note
+
+note over Browser:
+    Upon clicking 'Save', the onsubmit event handler
+    of the form gets executed
+end note
+
+Browser->Server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+
+Server-->Browser: {"message":"note created"}
+
