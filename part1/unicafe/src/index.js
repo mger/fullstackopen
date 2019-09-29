@@ -3,39 +3,24 @@ import ReactDOM from 'react-dom'
 
 const Heading = ({ title }) => <h1>{title}</h1>
 
-const Button = ({ name, onClick }) => (
-  <button onClick={onClick}>
-    {name}
-  </button>
-)
+const Button = ({ name, onClick }) => <button onClick={onClick}>{name}</button>
 
-const Statistic = ({ name, number }) => (
-  <div>
-    {name} {number}
-  </div>
-)
+const Statistic = ({ name, number }) => <div>{name} {number}</div>
 
 const Statistics = ({ good, goodName, neutral, neutralName, bad, badName }) => {
-  const total = good + neutral + bad
+  const total = good + neutral + bad 
+  if (total <= 0) { return <div>No feedback gathered yet</div> }
 
-  const averageScore = () => {
-    if (total <= 0) { return 0 } // Avoid displaying NaN
-    return ( 1* good + -1 * bad ) / total 
-  }
-
-  const positive = () => {
-    if (total <= 0) { return 0 } // Avoid displaying NaN
-    return (good / total) * 100
-  }
-
+  const averageScore = (1 * good + -1 * bad) / total 
+  const positive = (good / total) * 100
   return (
     <div>
       <Statistic name={goodName} number={good} />
       <Statistic name={neutralName} number={neutral} />
       <Statistic name={badName} number={bad} />
       <Statistic name="all" number={total} />
-      <Statistic name="average" number={averageScore()} />
-      <Statistic name="positive" number={positive() + '%'} />
+      <Statistic name="average" number={averageScore} />
+      <Statistic name="positive" number={positive + '%'} />
     </div>
   )
 }
