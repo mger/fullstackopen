@@ -29,6 +29,16 @@ const App = () => {
   const incrementNeutral = () => setNeutral(neutral + 1)
   const incrementBad = () => setBad(bad + 1)
 
+  const averageScore = () => {
+    if (good + neutral + bad <= 0) { return 0 } // Avoid displaying NaN
+    return ( good + -1 * bad ) / ( good + neutral + bad ) 
+  }
+
+  const positive = () => {
+    if (good + neutral + bad <= 0) { return 0 } // Avoid displaying NaN
+    return good / (good + neutral + bad) * 100
+  }
+
   return (
     <div>
       <Heading title="give feedback" />
@@ -39,6 +49,9 @@ const App = () => {
       <StatDisplay name={goodName} number={good} />
       <StatDisplay name={neutralName} number={neutral} />
       <StatDisplay name={badName} number={bad} />
+      <StatDisplay name="all" number={good + neutral + bad} />
+      <StatDisplay name="average" number={averageScore()} />
+      <StatDisplay name="positive (in %)" number={positive()} />
     </div>
   )
 }
