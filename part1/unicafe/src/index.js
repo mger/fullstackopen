@@ -5,7 +5,12 @@ const Heading = ({ title }) => <h1>{title}</h1>
 
 const Button = ({ name, onClick }) => <button onClick={onClick}>{name}</button>
 
-const Statistic = ({ name, value }) => <div>{name} {value}</div>
+const Statistic = ({ name, value }) => (
+  <tr>
+    <td>{name}</td> 
+    <td>{value}</td>
+  </tr>
+)
 
 const Statistics = ({ good, goodName, neutral, neutralName, bad, badName }) => {
   const total = good + neutral + bad 
@@ -14,14 +19,14 @@ const Statistics = ({ good, goodName, neutral, neutralName, bad, badName }) => {
   const averageScore = (1 * good + -1 * bad) / total 
   const positive = (good / total) * 100
   return (
-    <div>
+    <table>
       <Statistic name={goodName} value={good} />
       <Statistic name={neutralName} value={neutral} />
       <Statistic name={badName} value={bad} />
       <Statistic name="all" value={total} />
       <Statistic name="average" value={averageScore} />
       <Statistic name="positive" value={positive + '%'} />
-    </div>
+    </table>
   )
 }
 
