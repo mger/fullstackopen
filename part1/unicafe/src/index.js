@@ -9,11 +9,36 @@ const Button = ({ name, onClick }) => (
   </button>
 )
 
-const StatDisplay = ({ name, number }) => (
+const Statistic = ({ name, number }) => (
   <div>
     {name} {number}
   </div>
 )
+
+const Statistics = ({ good, goodName, neutral, neutralName, bad, badName }) => {
+  const total = good + neutral + bad
+
+  const averageScore = () => {
+    if (total <= 0) { return 0 } // Avoid displaying NaN
+    return ( 1* good + -1 * bad ) / total 
+  }
+
+  const positive = () => {
+    if (total <= 0) { return 0 } // Avoid displaying NaN
+    return (good / total) * 100
+  }
+
+  return (
+    <div>
+      <Statistic name={goodName} number={good} />
+      <Statistic name={neutralName} number={neutral} />
+      <Statistic name={badName} number={bad} />
+      <Statistic name="all" number={total} />
+      <Statistic name="average" number={averageScore()} />
+      <Statistic name="positive" number={positive() + '%'} />
+    </div>
+  )
+}
 
 const App = () => {
   // save clicks of each button to own state
@@ -28,17 +53,7 @@ const App = () => {
   const incrementGood = () => setGood(good + 1)
   const incrementNeutral = () => setNeutral(neutral + 1)
   const incrementBad = () => setBad(bad + 1)
-
-  const averageScore = () => {
-    if (good + neutral + bad <= 0) { return 0 } // Avoid displaying NaN
-    return ( good + -1 * bad ) / ( good + neutral + bad ) 
-  }
-
-  const positive = () => {
-    if (good + neutral + bad <= 0) { return 0 } // Avoid displaying NaN
-    return good / (good + neutral + bad) * 100
-  }
-
+  
   return (
     <div>
       <Heading title="give feedback" />
@@ -46,12 +61,7 @@ const App = () => {
       <Button name={neutralName} onClick={incrementNeutral} />
       <Button name={badName} onClick={incrementBad} />
       <Heading title="statistics" />
-      <StatDisplay name={goodName} number={good} />
-      <StatDisplay name={neutralName} number={neutral} />
-      <StatDisplay name={badName} number={bad} />
-      <StatDisplay name="all" number={good + neutral + bad} />
-      <StatDisplay name="average" number={averageScore()} />
-      <StatDisplay name="positive (in %)" number={positive()} />
+      <Statistics good={good} goodName={goodName} neutral={neutral} neutralName={neutralName} bad={bad} badName={badName} />
     </div>
   )
 }
