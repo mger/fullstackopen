@@ -1,7 +1,5 @@
 import React from 'react'
 
-import "./Countries.css"
-
 const CountryDetails = ({ name, capital, population, languages, flag}) => {
   const languageRows = () => languages.map(language => <li key={language.name}>{language.name}</li>)
   
@@ -14,8 +12,8 @@ const CountryDetails = ({ name, capital, population, languages, flag}) => {
       <ul>
         {languageRows()}
       </ul>
-      <p className="flag">
-        <img src={flag} alt="Country flag" />
+      <p>
+        <img src={flag} alt="Country flag" width="10%" />
       </p>
     </div>
   )
