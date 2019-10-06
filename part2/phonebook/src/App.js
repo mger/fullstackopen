@@ -6,13 +6,20 @@ const App = () => {
   ]) 
   const [ newName, setNewName ] = useState('')
 
+  const exists = (name) => persons.filter((person) => person.name === name).length > 0
+
   const addEntry = (event) => {
-    console.log("Add entry", event)
     event.preventDefault()
+    if (exists(newName)) {
+      console.log(`${newName} already exists in the phonebook; not adding`)
+      window.alert(`${newName} is already present in the phonebook`)
+      return
+    }
+    
+    console.log("Add entry", event)
     const newEntry = {
       name: newName
     }
-
     setPersons(persons.concat(newEntry))
     setNewName('')
   }
