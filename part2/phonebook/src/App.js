@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
-import Heading from "./components/Heading"
+import Filter from "./components/Filter"
+import PersonForm from './components/PersonForm'
+import Entries from './components/Entries'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -32,42 +34,27 @@ const App = () => {
     setNewNumber('')
   }
 
-  const handleNameChange = (event) => {
-    console.log("Name change", event.target.value)
-    setNewName(event.target.value)
-  }
-
-  const handleNumberChange = (event) => {
-    console.log("Number change", event.target.value)
-    setNewNumber(event.target.value)
-  }
-
-  const handleSearchFieldChange = (event) => {
-    console.log("Search field change", event.target.value)    
-    setSearchField(event.target.value)
+  const handleChange = (logString, update) => (event) => {
+    console.log(logString, event.target.value)
+    update(event.target.value)
   }
 
   const filteredPersons = persons.filter(
     person => person.name.toLowerCase().indexOf(searchField.toLowerCase()) !== -1
   )
-  const rows = () => filteredPersons.map(
-    person => <li key={person.name}>{person.name} {person.number}</li>
-  )
 
   return (
     <div>
-      <Heading title="Phonebook" />
-      <div>Filter: <input value={searchField} onChange={handleSearchFieldChange} /></div>
-      <Heading title="Add Entry" /> 
-      <form onSubmit={addEntry}>
-        <div>Name: <input value={newName} onChange={handleNameChange} /></div>
-        <div>Number: <input value={newNumber} onChange={handleNumberChange} /></div>
-        <div><button type="submit">add</button></div>
-      </form>
-      <Heading title="Numbers" />
-      <ul>
-        {rows()}
-      </ul>
+      <h1>Phonebook</h1>
+      <Filter value={searchField} onChange={handleChange("Search field change", setSearchField)}/>
+      <PersonForm 
+        nameValue={newName} 
+        numberValue={newNumber} 
+        onNameChange={handleChange("Name change", setNewName)} 
+        onNumberChange={handleChange("Number change", setNewNumber)}
+        onSubmit={addEntry}
+      />
+      <Entries persons={filteredPersons} />
     </div>
   )
 }
