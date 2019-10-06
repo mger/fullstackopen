@@ -1,9 +1,16 @@
 import React, { useState } from 'react'
+import Heading from "./components/Heading"
 
 const App = () => {
-  const [ persons, setPersons] = useState([]) 
+  const [persons, setPersons] = useState([
+    { name: 'Arto Hellas', number: '040-123456' },
+    { name: 'Ada Lovelace', number: '39-44-5323523' },
+    { name: 'Dan Abramov', number: '12-43-234345' },
+    { name: 'Mary Poppendieck', number: '39-23-6423122' }
+  ]) 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber] = useState('')
+  const [ searchField, setSearchField] = useState('')
 
   const exists = (name) => persons.filter((person) => person.name === name).length > 0
 
@@ -35,17 +42,29 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
-  const rows = () => persons.map(person => <li key={person.name}>{person.name} {person.number}</li>)
+  const handleSearchFieldChange = (event) => {
+    console.log("Search field change", event.target.value)    
+    setSearchField(event.target.value)
+  }
+
+  const filteredPersons = persons.filter(
+    person => person.name.toLowerCase().indexOf(searchField.toLowerCase()) !== -1
+  )
+  const rows = () => filteredPersons.map(
+    person => <li key={person.name}>{person.name} {person.number}</li>
+  )
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <Heading title="Phonebook" />
+      <div>Filter: <input value={searchField} onChange={handleSearchFieldChange} /></div>
+      <Heading title="Add Entry" /> 
       <form onSubmit={addEntry}>
-        <div>name: <input value={newName} onChange={handleNameChange} /></div>
-        <div>number: <input value={newNumber} onChange={handleNumberChange} /></div>
+        <div>Name: <input value={newName} onChange={handleNameChange} /></div>
+        <div>Number: <input value={newNumber} onChange={handleNumberChange} /></div>
         <div><button type="submit">add</button></div>
       </form>
-      <h2>Numbers</h2>
+      <Heading title="Numbers" />
       <ul>
         {rows()}
       </ul>
