@@ -11,11 +11,13 @@ const App = () => {
   const [ newNumber, setNewNumber] = useState('')
   const [ searchField, setSearchField] = useState('')
 
+  const base = "http://localhost:3001/persons"
+
   useEffect(() => {
     console.log("Effect: fetching data from server")
 
     axios
-      .get("http://localhost:3001/persons")
+      .get(base)
       .then(response => {
         console.log("Promise fulfilled")
         setPersons(response.data)
@@ -38,9 +40,15 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    setPersons(persons.concat(newEntry))
-    setNewName('')
-    setNewNumber('')
+    axios
+      .post(base, newEntry)
+      .then(response => {
+        console.log("New entry added successfully", response.data)
+
+        setPersons(persons.concat(response.data))
+        setNewName('')
+        setNewNumber('')
+      })
   }
 
   const handleChange = (logString, update) => (event) => {
