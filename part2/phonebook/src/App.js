@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
+
 import Filter from "./components/Filter"
 import PersonForm from './components/PersonForm'
 import Entries from './components/Entries'
 
-import axios from 'axios'
+import personService from "./services/persons"
 
 const App = () => {
   const [ persons, setPersons ] = useState([]) 
@@ -11,17 +12,12 @@ const App = () => {
   const [ newNumber, setNewNumber] = useState('')
   const [ searchField, setSearchField] = useState('')
 
-  const base = "http://localhost:3001/persons"
-
   useEffect(() => {
     console.log("Effect: fetching data from server")
 
-    axios
-      .get(base)
-      .then(response => {
-        console.log("Promise fulfilled")
-        setPersons(response.data)
-      })
+    personService
+      .getAll()
+      .then(persons => { setPersons(persons) })
   }, [])
   console.log("Render", persons.length, "persons")
 
@@ -40,12 +36,13 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    axios
-      .post(base, newEntry)
-      .then(response => {
-        console.log("New entry added successfully", response.data)
 
-        setPersons(persons.concat(response.data))
+    personService
+      .add(newEntry)
+      .then(newEntry => {
+        console.log("New entry added successfully", newEntry)
+
+        setPersons(persons.concat(newEntry))
         setNewName('')
         setNewNumber('')
       })
