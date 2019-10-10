@@ -21,13 +21,30 @@ const App = () => {
   }, [])
   console.log("Render", persons.length, "persons")
 
-  const exists = (name) => persons.filter((person) => person.name === name).length > 0
+  const matchingPersons = (name) => persons.filter(person => person.name === name)
+
+  const handleUpdate = (oldEntry, updatedNumber) => {
+    const confirm = window.confirm(`The entry ${oldEntry.name} already exists. Do you want to update ${oldEntry.number} with ${updatedNumber}?`)
+    
+      if (confirm === false) { return }
+      
+      const updatedEntry = { ...oldEntry, number: updatedNumber }
+      console.log("Update entry", updatedEntry)
+
+      personService
+        .update(updatedEntry.id, updatedEntry)
+        .then(entry => {
+          console.log("Entry successfully updated", entry)
+          setPersons(persons.map(person => person.id !== entry.id ? person : entry))
+        })
+  }
 
   const addEntry = (event) => {
     event.preventDefault()
-    if (exists(newName)) {
-      console.log(`${newName} already exists in the phonebook; not adding`)
-      window.alert(`${newName} is already present in the phonebook`)
+
+    const matching = matchingPersons(newName)
+    if (matching.length > 0) {
+      handleUpdate(matching[0], newNumber)
       return
     }
     
@@ -40,7 +57,7 @@ const App = () => {
     personService
       .add(newEntry)
       .then(newEntry => {
-        console.log("New entry added successfully", newEntry)
+        console.log("Entry successfully added", newEntry)
 
         setPersons(persons.concat(newEntry))
         setNewName('')
