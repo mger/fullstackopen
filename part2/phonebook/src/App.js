@@ -3,14 +3,16 @@ import React, { useState, useEffect } from 'react'
 import Filter from "./components/Filter"
 import PersonForm from './components/PersonForm'
 import Entries from './components/Entries'
+import Notification from './components/Notification'
 
 import personService from "./services/persons"
 
 const App = () => {
   const [ persons, setPersons ] = useState([]) 
   const [ newName, setNewName ] = useState('')
-  const [ newNumber, setNewNumber] = useState('')
-  const [ searchField, setSearchField] = useState('')
+  const [ newNumber, setNewNumber ] = useState('')
+  const [ searchField, setSearchField ] = useState('')
+  const [ notification, setNotification ] = useState(null)
 
   useEffect(() => {
     console.log("Effect: fetching data from server")
@@ -36,6 +38,11 @@ const App = () => {
         .then(entry => {
           console.log("Entry successfully updated", entry)
           setPersons(persons.map(person => person.id !== entry.id ? person : entry))
+
+          setNotification(`The number of ${entry.name} was updated to ${entry.number}.`)
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
         })
   }
 
@@ -62,6 +69,11 @@ const App = () => {
         setPersons(persons.concat(newEntry))
         setNewName('')
         setNewNumber('')
+
+        setNotification(`Added ${newEntry.name} with number ${newEntry.number} to phone book.`)
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000)
       })
   }
 
@@ -77,6 +89,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification message={notification} />
       <Filter value={searchField} onChange={handleChange("Search field change", setSearchField)}/>
       <PersonForm 
         nameValue={newName} 
