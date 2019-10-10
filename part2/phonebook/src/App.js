@@ -13,6 +13,7 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ searchField, setSearchField ] = useState('')
   const [ notification, setNotification ] = useState(null)
+  const [ success, setSuccess ] = useState(true)
 
   useEffect(() => {
     console.log("Effect: fetching data from server")
@@ -38,8 +39,18 @@ const App = () => {
         .then(entry => {
           console.log("Entry successfully updated", entry)
           setPersons(persons.map(person => person.id !== entry.id ? person : entry))
-
+          
+          if (success === false) { setSuccess(true) }
           setNotification(`The number of ${entry.name} was updated to ${entry.number}.`)
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
+        })
+        .catch(error => {
+          console.log("Update failed", error)
+
+          if (success === true) { setSuccess(false) }
+          setNotification(`Updating the number of ${updatedEntry.name} failed; already deleted from server.`)
           setTimeout(() => {
             setNotification(null)
           }, 5000)
@@ -70,6 +81,7 @@ const App = () => {
         setNewName('')
         setNewNumber('')
 
+        if (success === false) { setSuccess(true) }
         setNotification(`Added ${newEntry.name} with number ${newEntry.number} to phone book.`)
         setTimeout(() => {
           setNotification(null)
@@ -89,7 +101,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <Notification message={notification} />
+      <Notification message={notification} success={success} />
       <Filter value={searchField} onChange={handleChange("Search field change", setSearchField)}/>
       <PersonForm 
         nameValue={newName} 
