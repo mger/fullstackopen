@@ -68,7 +68,7 @@ const App = () => {
         onNumberChange={handleChange("Number change", setNewNumber)}
         onSubmit={addEntry}
       />
-      <Entries persons={filteredPersons} />
+      <Entries persons={filteredPersons} setPersons={setPersons} />
     </div>
   )
 }

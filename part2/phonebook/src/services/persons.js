@@ -12,4 +12,9 @@ const add = (newEntry) => {
   return request.then(response => response.data)
 }
 
-export default { getAll, add }
+const deleteSingle = (id) => {
+  const request = axios.delete(`${base}/${id}`)
+  return request.then(response => response.data)
+}
+
+export default { getAll, add, deleteSingle }

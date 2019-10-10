@@ -21,29 +21,9 @@
       "id": 4
     },
     {
-      "name": "Mario Gersbach",
-      "number": "0786343019",
-      "id": 5
-    },
-    {
       "name": "Test",
       "number": "1234",
-      "id": 6
-    },
-    {
-      "name": "Ichbinneu",
-      "number": "12345",
-      "id": 7
-    },
-    {
-      "name": "Nocheintest",
-      "number": "98876",
-      "id": 8
-    },
-    {
-      "name": "",
-      "number": "",
-      "id": 9
+      "id": 5
     }
   ]
 }
